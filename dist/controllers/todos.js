@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTodo = exports.getTodos = exports.createTodo = void 0;
+exports.deleteTodo = exports.updateTodo = exports.getTodos = exports.createTodo = void 0;
 const todo_1 = require("../models/todo");
 const todos = [];
 const createTodo = (req, res, next) => {
@@ -49,4 +49,23 @@ const updateTodo = (req, res, next) => {
     }
 };
 exports.updateTodo = updateTodo;
+const deleteTodo = (req, res, next) => {
+    try {
+        const todoId = req.params.id;
+        const todoIndex = todos.findIndex(todo => todo.id === todoId);
+        const existingTodo = todos[todoIndex];
+        if (!existingTodo) {
+            throw new Error("Could not find todo");
+        }
+        todos.splice(todoIndex, 1);
+        res.status(201).json({
+            message: "Deleted todo",
+            deletedTask: existingTodo
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+exports.deleteTodo = deleteTodo;
 //# sourceMappingURL=todos.js.map
